@@ -1,7 +1,7 @@
-use std::io::{self, Write};
-use std::cmp::Ordering;
 use colored::*;
 use rand::Rng;
+use std::cmp::Ordering;
+use std::io::{self, Write};
 
 // Clear the console screen
 fn clear() {
@@ -26,8 +26,20 @@ fn main() {
     println!();
 
     loop {
-        println!("{}", format!("Level {}: Guess a number from {} to {}!", level, "1".yellow().bold(), maximum.to_string().yellow().bold()).green());
-        println!("{}", format!("Lives remaining: {}", "❤".repeat(lives)).red());
+        println!(
+            "{}",
+            format!(
+                "Level {}: Guess a number from {} to {}!",
+                level,
+                "1".yellow().bold(),
+                maximum.to_string().yellow().bold()
+            )
+            .green()
+        );
+        println!(
+            "{}",
+            format!("Lives remaining: {}", "❤".repeat(lives)).red()
+        );
 
         let index = rand::thread_rng().gen_range(1..=maximum);
 
@@ -50,46 +62,77 @@ fn main() {
             match parsed_guess {
                 Ok(n) => {
                     if (n as usize) > maximum {
-                        println!("{}", format!("Please guess a number between 1 and {maximum}.").red());
+                        println!(
+                            "{}",
+                            format!("Please guess a number between 1 and {maximum}.").red()
+                        );
                         continue;
                     }
                     match (n as usize).cmp(&index) {
                         Ordering::Less => {
                             println!("{}", "Too low! Try a higher number.".red().bold());
                             lives -= 1;
-                        },
+                        }
                         Ordering::Greater => {
                             println!("{}", "Too high! Try a lower number.".red().bold());
                             lives -= 1;
-                        },
+                        }
                         Ordering::Equal => {
-                            println!("{} It was {}.", "Correct!".green().bold(), n.to_string().yellow().bold());
+                            println!(
+                                "{} It was {}.",
+                                "Correct!".green().bold(),
+                                n.to_string().yellow().bold()
+                            );
                             level += 1;
                             maximum += 10;
                             lives += (level as f32 / 2.0).round() as usize;
-                            println!("{}", format!("You've advanced to level {} and gained an extra life!", level).yellow().italic());
+                            println!(
+                                "{}",
+                                format!(
+                                    "You've advanced to level {} and gained an extra life!",
+                                    level
+                                )
+                                .yellow()
+                                .italic()
+                            );
                             break 'inner;
                         }
                     }
                 }
-                Err(e) => {
-                    match e.kind() {
-                        std::num::IntErrorKind::PosOverflow => {
-                            println!("{}", format!("Number too large. Please enter a number below {}.", u32::MAX).red());
-                        },
-                        _ => {
-                            println!("{}", "Invalid input. Please enter a valid number.".red().bold());
-                        }
+                Err(e) => match e.kind() {
+                    std::num::IntErrorKind::PosOverflow => {
+                        println!(
+                            "{}",
+                            format!(
+                                "Number too large. Please enter a number below {}.",
+                                u32::MAX
+                            )
+                            .red()
+                        );
                     }
-                }
+                    _ => {
+                        println!(
+                            "{}",
+                            "Invalid input. Please enter a valid number.".red().bold()
+                        );
+                    }
+                },
             };
 
             if lives == 0 {
-                println!("{}", format!("Game Over, it was {index}! You made it to level {}.", level).red().bold());
+                println!(
+                    "{}",
+                    format!("Game Over, it was {index}! You made it to level {}.", level)
+                        .red()
+                        .bold()
+                );
                 return;
             }
 
-            println!("{}", format!("Lives remaining: {}", "❤".repeat(lives)).red());
+            println!(
+                "{}",
+                format!("Lives remaining: {}", "❤".repeat(lives)).red()
+            );
         }
 
         clear();
