@@ -6,12 +6,12 @@ This is a simple guessing game implemented in Rust.
 
 1. Clone the repository:
   ```
-  git clone https://github.com/mambucodev/guessing-game.rs.git
+  git clone https://github.com/mambucodev/guess-rs.git
   ```
 
 2. Navigate to the project directory:
   ```
-  cd guessing-game.rs
+  cd guess-rs
   ```
 
 3. Build the project:
